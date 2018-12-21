@@ -1,0 +1,6 @@
+#!/bin/sh
+
+python -m createmap.tools "$@"
+
+# ./cm voxel --help
+# ./cm voxel -e data/witten_elevation_5555_cropped_2.tif -bd data/witten-processed.sqlite -bv 254 -pfd 3
