@@ -11,6 +11,7 @@ import re
 import numpy as np
 import polylidar
 from shapely_geojson import dumps, Feature, FeatureCollection
+from shapely.geometry.multipolygon import MultiPolygon
 
 def get_allowed_classes(class_mapping):
     classes = class_mapping.get('classes')
