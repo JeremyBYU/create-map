@@ -2,7 +2,7 @@
 
 import argparse
 
-from createmap.tools import np2las, npfilt, np2geom
+from createmap.tools import np2las, npfilt, np2geom, npjoin
 
 def add_parsers():
     parser = argparse.ArgumentParser(prog="./cv")
@@ -12,6 +12,7 @@ def add_parsers():
     np2las.add_parser(subparser)
     npfilt.add_parser(subparser)
     np2geom.add_parser(subparser)
+    npjoin.add_parser(subparser)
 
 
     # We return the parsed arguments, but the sub-command parsers
