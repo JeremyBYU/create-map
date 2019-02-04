@@ -15,8 +15,10 @@ def add_parser(subparser):
 
     parser.add_argument('--files', '-f', type=argparse.FileType('rb'), nargs='+', help='Files to combines')
     parser.add_argument("--las", "-l", help="Convert to las", action="store_true", default=False)
+    parser.add_argument("--csv", "-c", help="Convert to csv", action="store_true", default=False)
+    parser.add_argument("--csv-header", "-ch", help="Header for CSV", type=str, default="")
     parser.add_argument("--scale", "-s", type=str, default="", help="Scale axes, -s 1,1,100 scales column z axes by 100")
-    parser.add_argument("--axis", "-a", type=str, default="", help="Reorder axes, -o 2,1,0 puts swaps x and z axes")
+    parser.add_argument("--axis", "-a", type=str, default="", help="Reorder axes, -o 2,1,0 swaps x and z axes")
     parser.add_argument("--out", "-o", type=str, default="combined.npy",
                         help="path to output numpy file")
 
@@ -35,8 +37,6 @@ def main(args):
             combined_data = np.vstack((combined_data, data))
         else:
             combined_data = data
-
-
     # Make modifications
     if args.scale:
         split = args.scale.split(',')
@@ -58,5 +58,8 @@ def main(args):
     if args.las:
         new_filename = Path(args.out).stem + ".las"
         make_las_file(combined_data, new_filename)
+    elif args.csv:
+        new_filename = Path(args.out).stem + ".csv"
+        np.savetxt(new_filename, combined_data, fmt='%.4f', delimiter=',', header=args.csv_header, comments='')
     else:
         np.save(args.out, combined_data)
