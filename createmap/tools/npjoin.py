@@ -1,7 +1,7 @@
 import argparse
 import json
 import re
-from pathlib import Path
+from pathlib import Path, PurePath
 
 import glob
 import numpy as np
@@ -56,10 +56,14 @@ def main(args):
 
     print("Final size is : {}".format(combined_data.shape))
     if args.las:
-        new_filename = Path(args.out).stem + ".las"
+        file = PurePath(args.out)
+        new_filename = str(PurePath.joinpath(file.parent, file.stem))
+        new_filename += '.las'
         make_las_file(combined_data, new_filename)
     elif args.csv:
-        new_filename = Path(args.out).stem + ".csv"
+        file = PurePath(args.out)
+        new_filename = str(PurePath.joinpath(file.parent, file.stem))
+        new_filename += '.csv'
         np.savetxt(new_filename, combined_data, fmt='%.4f', delimiter=',', header=args.csv_header, comments='')
     else:
         np.save(args.out, combined_data)
