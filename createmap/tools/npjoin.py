@@ -13,7 +13,7 @@ def add_parser(subparser):
         "npjoin", help="Combine numpy arrays of similar shape", formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
 
-    parser.add_argument('--files', '-f', type=argparse.FileType('rb'), nargs='+', help='Files to combines')
+    parser.add_argument('--files', '-f', type=str, nargs='+', help='Files to combines')
     parser.add_argument("--las", "-l", help="Convert to las", action="store_true", default=False)
     parser.add_argument("--csv", "-c", help="Convert to csv", action="store_true", default=False)
     parser.add_argument("--csv-header", "-ch", help="Header for CSV", type=str, default="")
@@ -31,6 +31,7 @@ def main(args):
     # npfiles = glob.glob(args.glob)
     # npfiles.sort()
     combined_data = None
+    # print(args.files)
     for file in args.files:
         data= np.load(file)
         if combined_data is not None:

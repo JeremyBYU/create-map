@@ -5,7 +5,7 @@ import argparse
 from createmap.tools import np2las, npfilt, np2geom, npjoin
 
 def add_parsers():
-    parser = argparse.ArgumentParser(prog="./cv")
+    parser = argparse.ArgumentParser(prog="./cm")
     subparser = parser.add_subparsers(title="createmap", metavar="")
 
     # Add your tool's entry point below.
