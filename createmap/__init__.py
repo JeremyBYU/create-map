@@ -8,8 +8,10 @@ Data sources:
 
 
 import re
+import logging
 import numpy as np
 import polylidar
+from polylidar.polylidarutil.plane_filtering import filter_planes
 from shapely_geojson import dumps, Feature, FeatureCollection
 from shapely.geometry.multipolygon import MultiPolygon
 
@@ -47,22 +49,26 @@ def filter_classes(pc, filters):
     return pc_filtered_, class_labels
 
 
-def get_planes(lidar_building, class_id, class_label, **kwargs):
-    plane_patches, tri, _ = polylidar.extract_planes(lidar_building, **kwargs)
-    geometries = polylidar.plane_meshes_to_polygons(tri, plane_patches, lidar_building, **kwargs)
+def get_planes(pl: polylidar.Polylidar3D, lidar_building, class_id, class_label, config_pp, **kwargs):
+    np_mat = polylidar.MatrixDouble(lidar_building)
+    mesh, planes, polygons = pl.extract_planes_and_polygons(np_mat)
+    planes = filter_planes(polygons, lidar_building, config_pp)
     features = []
-    for geom in geometries:
-        features.append(Feature(geom['geometry'], {'class_id': class_id, 'class_label': class_label, 'height': geom['height']}))
+    for plane in planes:
+        features.append(Feature(plane[0], {'class_id': class_id, 'class_label': class_label, 'height': plane[1]}))
     return features
 
-def get_geometries(pc, class_labels, **kwargs):
+def get_geometries(pc, class_labels, polylidar_kwargs, config_pp, **kwargs):
     classes = pc[:, 3]
+    xyz = pc[:, :3]
     unique_classes = np.unique(classes)
     geometries = []
+    pl = polylidar.Polylidar3D(**polylidar_kwargs)
     for class_id in unique_classes:
-        building = pc[classes == class_id]
-        print(building.shape)
+        building = np.copy(xyz[classes == class_id])
         class_label = class_labels[int(class_id)]
-        geometries.extend(get_planes(building, class_id, class_label, **kwargs))
+        geometries.extend(get_planes(pl, building, class_id, class_label, config_pp, **kwargs))
+
+    logging.info("Extracted %r geometries", len(geometries))
     return FeatureCollection(geometries)
 

@@ -32,7 +32,7 @@ def main(args):
     if numpy_pc.shape[1] == 4:
         with open(args.config) as f:
             config = json.load(f)
-        geometries = get_geometries(numpy_pc, config['filtered_classes'], **config['np2geom'])
+        geometries = get_geometries(numpy_pc, config['filtered_classes'], config['polylidar_kwargs'], config['config_pp'])
         with open(args.out, "w") as f:
             dump(geometries, f, indent=2)
 

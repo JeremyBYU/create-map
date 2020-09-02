@@ -6,7 +6,7 @@ setup(
     scripts=['cm'],
 
     # installed or upgraded on the target machine
-    install_requires=['docutils>=0.3', 'numpy', 'shapely', 'shapely-geojson', 'laspy>=1.5.0', 'matplotlib', 'seaborn', "Cython", 'descartes'],
+    install_requires=['numpy', 'shapely', 'shapely-geojson', 'laspy>=1.5.0', 'matplotlib', 'seaborn', "Cython", 'descartes'],
 
     package_data={
         # If any package contains *.txt or *.rst files, include them:
@@ -19,9 +19,6 @@ setup(
     description="Creates map data from point cloud data",
     license="MIT",
     keywords="voxel elevation lidar las",
-    url="https://bitbucket.org/umich_a2sys/create-voxel/src/master/",   # project home page, if any
-    project_urls={
-        "Bug Tracker": "https://bitbucket.org/umich_a2sys/create-voxel/src/master/",
-    }
+    url="",   # project home page, if any
 
 )

@@ -4,9 +4,11 @@
 
 ## Install
 
-1. `pip install -e . --process-dependency-links`
+
+First install [Polylidar3D](https://github.com/JeremyBYU/polylidar). You don't need `OrganizedPointFilters` or `FastGA` which are optional dependencies of `Polylidar3D`. Next just install all remaining dependencies with:
 
 
+1. `pip install -e .`
 
 
 ## Instructions
@@ -102,5 +104,12 @@ optional arguments:
 ```
 
 
+### Examles
+
+
+Rooftop Example: 
+
+1. `cm npfilt -i data/rooftop/point_cloud.npy -c data/rooftop/sample.json --out data/rooftop/point_cloud_filtered.npy`
+2. `cm np2geom -i data/rooftop/point_cloud_filtered.npy -c data/rooftop/sample.json --out data/rooftop/point_cloud_map.json`
 
 
