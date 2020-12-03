@@ -14,6 +14,7 @@ import polylidar
 from polylidar.polylidarutil.plane_filtering import filter_planes
 from shapely_geojson import dumps, Feature, FeatureCollection
 from shapely.geometry.multipolygon import MultiPolygon
+import logging
 
 def get_allowed_classes(class_mapping):
     classes = class_mapping.get('classes')
@@ -66,6 +67,8 @@ def get_geometries(pc, class_labels, polylidar_kwargs, config_pp, **kwargs):
     pl = polylidar.Polylidar3D(**polylidar_kwargs)
     for class_id in unique_classes:
         building = np.copy(xyz[classes == class_id])
+        logging.info("Building class size: %s", building.shape)
+        # import ipdb; ipdb.set_trace()
         class_label = class_labels[int(class_id)]
         geometries.extend(get_planes(pl, building, class_id, class_label, config_pp, **kwargs))
 
